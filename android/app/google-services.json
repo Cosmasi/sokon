@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "919547404168",
+    "project_id": "sokon-79b29",
+    "storage_bucket": "sokon-79b29.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:919547404168:android:57bff377e481405e55a43d",
+        "android_client_info": {
+          "package_name": "com.example.sokon"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "919547404168-tncmknvmtsg191nm6ifoo561j697c208.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDVgHFuKhbDnS5QGU2lvM3TzDcTTSfOKY4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "919547404168-tncmknvmtsg191nm6ifoo561j697c208.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
