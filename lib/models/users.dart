@@ -1,9 +1,10 @@
 
 class UsersModel{
-  final String userName;
-  final String email;
-  final String userPhone;
-  final String userId;
+  String userName;
+  String email;
+  String userPhone;
+  String userId;
+  bool isLoggedIn;
 
-  UsersModel({this.userName,this.email,this.userPhone,this.userId});
+  UsersModel({this.userName,this.email,this.userPhone,this.userId, this.isLoggedIn});
 }

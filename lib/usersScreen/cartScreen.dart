@@ -15,38 +15,40 @@ class _CartScreenState extends State<CartScreen> {
   Widget build(BuildContext context) {
     Size screenSize = MediaQuery.of(context).size;
     final cart = Provider.of<CartProvider>(context);
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("Cart"),
-      ),
-      body: Column(
-        children: <Widget>[
-        Card(
-            margin: EdgeInsets.all(15),
-            elevation: 2,
-            child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 15, vertical: 8),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  OderButton(cart: cart)
-                ],
+    return SafeArea(
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text("Cart"),
+        ),
+        body: Column(
+          children: <Widget>[
+          Card(
+              margin: EdgeInsets.all(15),
+              elevation: 2,
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 15, vertical: 8),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    OderButton(cart: cart)
+                  ],
+                ),
               ),
             ),
-          ),
-          SizedBox(height: 10,),
-          Expanded(
-            child: ListView.builder(
-              itemCount: cart.items.length,
-              itemBuilder: (_, index) => CartWidget(
-                cart.items.values.toList()[index].id,
-                cart.items.keys.toList()[index],
-                cart.items.values.toList()[index].quantity,
-                cart.items.values.toList()[index].title
-              ),
+            SizedBox(height: 10,),
+            Expanded(
+              child: ListView.builder(
+                itemCount: cart.items.length,
+                itemBuilder: (_, index) => CartWidget(
+                  cart.items.values.toList()[index].id,
+                  cart.items.keys.toList()[index],
+                  cart.items.values.toList()[index].quantity,
+                  cart.items.values.toList()[index].title
+                ),
+              )
             )
-          )
-        ],
+          ],
+        ),
       ),
     );
   }

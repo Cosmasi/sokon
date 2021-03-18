@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:sokon/tools/app_tools.dart';
+import 'package:sokon/vendorsSreen/vendorHomeScreen.dart';
+
+import '../authentication.dart';
 
 class VendorsLogInScreen extends StatefulWidget {
+  static const String id = 'vendorLogin';
   @override
   _VendorsLogInScreenState createState() => _VendorsLogInScreenState();
 }
@@ -11,6 +15,8 @@ class _VendorsLogInScreenState extends State<VendorsLogInScreen> {
   TextEditingController email = TextEditingController();
   TextEditingController password = TextEditingController();
   final scaffoldKey = GlobalKey<ScaffoldState>();
+
+  Authentication authentication = Authentication();
 
   @override
   Widget build(BuildContext context) {
@@ -51,8 +57,7 @@ class _VendorsLogInScreenState extends State<VendorsLogInScreen> {
               buttonPadding: 10.0 ,
               buttoncolor: Colors.black,
               btnColor: Colors.white,
-              // onBtnclick: verifyLogin,
-              onBtnclick: (){}
+              onBtnclick: verifyLogin,
             ),
             SizedBox(height: 10.0),
             Text('Forgot password ?', 
@@ -63,5 +68,27 @@ class _VendorsLogInScreenState extends State<VendorsLogInScreen> {
         ),
       ),
     );
+  }
+
+  verifyLogin() async{
+    if (email.text == "") {
+      showSnackBar(message: "Email cannot be empty", key: scaffoldKey);
+      return;
+    } else if (password.text == "") {
+      showSnackBar(message: "Password cannot be empty", key: scaffoldKey);
+      return;
+    }
+
+    displayProgressDialog(context);
+
+    String response = await authentication.loginVendor(
+        vEmail: email.text.toLowerCase(),
+        vPassword: password.text.toLowerCase()
+    );
+
+    if(response == "successful"){
+      closeProgressDialog(context);
+      Navigator.pushNamedAndRemoveUntil(context, VendorHomeScreen.id, (route) => false);
+    }
   }
 }

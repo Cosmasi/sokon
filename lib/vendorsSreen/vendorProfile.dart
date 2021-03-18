@@ -1,68 +1,65 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'package:sokon/models/vendors.dart';
 import 'package:sokon/tools/app_data.dart';
-import 'package:sokon/tools/app_tools.dart';
 
-class ProfileScreen extends StatefulWidget {
-  static const String id = "profileScreen";
+import '../authentication.dart';
+
+class VendorProfile extends StatefulWidget {
+  static const String id = 'vendorProfile';
   @override
-  _ProfileScreenState createState() => _ProfileScreenState();
+  _VendorProfileState createState() => _VendorProfileState();
 }
 
-class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProviderStateMixin {
-  TextEditingController userNameConteroller = TextEditingController();
-  TextEditingController userEmailConteroller = TextEditingController();
-  TextEditingController userPhoneConteroller = TextEditingController();
+class _VendorProfileState extends State<VendorProfile> {
+  TextEditingController vendorNameConteroller = TextEditingController();
+  TextEditingController vendorEmailConteroller = TextEditingController();
+  TextEditingController vendorPhoneConteroller = TextEditingController();
 
   GlobalKey<ScaffoldState> scaffoldKey = GlobalKey();
 
+  User firebaseUser;
+
   bool _status = true;
+
   final FocusNode myFocusNode = FocusNode();
-  
-  String accountName = "";
-  String accountEmail = "";
-  String phoneNum = "";
-  String userId = "";
-  bool isLoggedin;
 
-
-  @override
-  void dispose() {
-    myFocusNode.dispose();
-    super.dispose();
-  }
-
+  Authentication authentication = Authentication();
 
   @override
   void initState() {
-   getCurrentUser();
+    // authentication.getVendors();
+    getVendors();
     super.initState();
   }
 
+  Future<void> getVendors() async{
+    DatabaseReference vendorsRef = FirebaseDatabase.instance.reference().child(vendors);
+    User firebaseUser = auth.currentUser;
+    vendorsRef.child(firebaseUser.uid).once().then((DataSnapshot snapshot){
+      Vendors vendors = Vendors(
+        vendorId: snapshot.value[vendorID],
+        vendorName: snapshot.value[vendorName],
+        vendorEmail: snapshot.value[vendorEmail],
+        vendorPhone: snapshot.value[vendorPhoneNumber],
+      );
+      print(vendors.vendorName);
+      vendorsInfo = vendors;
+      setState(() {
 
-  Future getCurrentUser() async{
-    // acctPhotoUrl = await getStringDataLocally(key: photoUrl);
-    accountName = await getStringDataLocally(key: fullName);
-    accountEmail = await getStringDataLocally(key: userEmail);
-    phoneNum = await getStringDataLocally(key: phoneNumber);
-    userId = await getStringDataLocally(key: userID);
-    isLoggedin = await getBoolDataLocally(key: loggedIn);
-    print(await getStringDataLocally(key: phoneNumber));
-    accountName == null ? accountName = "Guest User" : accountName;
-    accountEmail == null ? accountEmail = "guestuser@gmail.com" : accountEmail;
-
-    setState(() {});
+      });
+    });
   }
 
-
   @override
-  Widget build(BuildContext context) { 
-    userNameConteroller.text = accountName;
-    userEmailConteroller.text = accountEmail;
-    userPhoneConteroller.text = phoneNum;
-    return SafeArea(
-      child: Scaffold(
-        key: scaffoldKey,
-        body: new Container(
+  Widget build(BuildContext context) {
+    vendorNameConteroller.text = vendorsInfo.vendorName;
+    vendorEmailConteroller.text = vendorsInfo.vendorEmail;
+    vendorPhoneConteroller.text = vendorsInfo.vendorPhone;
+    return Scaffold(
+      key: scaffoldKey,
+      body: new Container(
         color: Colors.white,
         child: new ListView(
           children: <Widget>[
@@ -90,10 +87,11 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
                               padding: EdgeInsets.only(left: 25.0),
                               child: new Text('PROFILE',
                                 style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 20.0,
-                                  fontFamily: 'sans-serif-light',
-                                  color: Colors.black)),
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 20.0,
+                                    fontFamily: 'sans-serif-light',
+                                    color: Colors.black),
+                              ),
                             )
                           ],
                         ),
@@ -112,7 +110,7 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
                                   shape: BoxShape.circle,
                                   image: new DecorationImage(
                                     image: new ExactAssetImage(
-                                      'assets/images/user_icon.png'),
+                                        'assets/images/user_icon.png'),
                                     fit: BoxFit.cover,
                                   ),
                                 ),
@@ -196,43 +194,43 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
                         ),
                         Padding(
                           padding: EdgeInsets.only(left: 25.0, right: 25.0, top: 2.0),
-                            child: new Row(
-                              mainAxisSize: MainAxisSize.max,
-                              children: <Widget>[
-                                new Flexible(
-                                  child: new TextField(
-                                    controller: userNameConteroller,
-                                    decoration: const InputDecoration(
-                                      hintText: "Enter Your Name",
-                                    ),
-                                    style: TextStyle(fontSize: 20.0),
-                                    enabled: !_status,
-                                    autofocus: !_status,
+                          child: new Row(
+                            mainAxisSize: MainAxisSize.max,
+                            children: <Widget>[
+                              new Flexible(
+                                child: new TextField(
+                                  controller: vendorNameConteroller,
+                                  decoration: const InputDecoration(
+                                    hintText: "Enter Your Name",
                                   ),
+                                  style: TextStyle(fontSize: 20.0),
+                                  enabled: !_status,
+                                  autofocus: !_status,
                                 ),
-                              ],
-                            ),
+                              ),
+                            ],
                           ),
+                        ),
                         Padding(
                           padding: EdgeInsets.only(left: 25.0, right: 25.0, top: 25.0),
-                            child: new Row(
-                              mainAxisSize: MainAxisSize.max,
-                              children: <Widget>[
-                                new Column(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: <Widget>[
-                                    new Text(
-                                      'Email',
-                                      style: TextStyle(
+                          child: new Row(
+                            mainAxisSize: MainAxisSize.max,
+                            children: <Widget>[
+                              new Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                mainAxisSize: MainAxisSize.min,
+                                children: <Widget>[
+                                  new Text(
+                                    'Email',
+                                    style: TextStyle(
                                         fontSize: 16.0,
                                         fontWeight: FontWeight.bold),
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
+                                  ),
+                                ],
+                              ),
+                            ],
                           ),
+                        ),
                         Padding(
                           padding: EdgeInsets.only(left: 25.0, right: 25.0, top: 2.0),
                           child: new Row(
@@ -240,7 +238,7 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
                             children: <Widget>[
                               new Flexible(
                                 child: new TextField(
-                                  controller: userEmailConteroller,
+                                  controller: vendorEmailConteroller,
                                   decoration: const InputDecoration(
                                       hintText: "Enter Email"),
                                   enabled: !_status,
@@ -250,41 +248,41 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
                           ),
                         ),
                         Padding(
-                            padding: EdgeInsets.only(left: 25.0, right: 25.0, top: 25.0),
-                            child: new Row(
-                              mainAxisSize: MainAxisSize.max,
-                              children: <Widget>[
-                                new Column(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: <Widget>[
-                                    new Text(
-                                      'Mobile',
-                                      style: TextStyle(
+                          padding: EdgeInsets.only(left: 25.0, right: 25.0, top: 25.0),
+                          child: new Row(
+                            mainAxisSize: MainAxisSize.max,
+                            children: <Widget>[
+                              new Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                mainAxisSize: MainAxisSize.min,
+                                children: <Widget>[
+                                  new Text(
+                                    'Mobile',
+                                    style: TextStyle(
                                         fontSize: 16.0,
                                         fontWeight: FontWeight.bold),
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
+                                  ),
+                                ],
+                              ),
+                            ],
                           ),
+                        ),
                         Padding(
                           padding: EdgeInsets.only(left: 25.0, right: 25.0, top: 2.0),
-                            child: new Row(
-                              mainAxisSize: MainAxisSize.max,
-                              children: <Widget>[
-                                new Flexible(
-                                  child: new TextField(
-                                    controller: userPhoneConteroller,
-                                    decoration: const InputDecoration(
-                                        hintText: "Enter Mobile Number"),
-                                    enabled: !_status,
-                                  ),
+                          child: new Row(
+                            mainAxisSize: MainAxisSize.max,
+                            children: <Widget>[
+                              new Flexible(
+                                child: new TextField(
+                                  controller: vendorPhoneConteroller,
+                                  decoration: const InputDecoration(
+                                      hintText: "Enter Mobile Number"),
+                                  enabled: !_status,
                                 ),
-                              ],
-                            ),
+                              ),
+                            ],
                           ),
+                        ),
                         !_status ? _getActionButtons() : new Container(),
                       ],
                     ),
@@ -294,7 +292,7 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
             ),
           ],
         ),
-      ),),
+      ),
     );
   }
 
@@ -310,42 +308,42 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
               padding: EdgeInsets.only(right: 10.0),
               child: Container(
                   child: new RaisedButton(
-                child: new Text("Save"),
-                textColor: Colors.white,
-                color: Colors.green,
-                onPressed: () async{
-                  setState(() {
-                    _status = true;
-                    FocusScope.of(context).requestFocus(new FocusNode());
-                  });
+                    child: new Text("Save"),
+                    textColor: Colors.white,
+                    color: Colors.green,
+                    onPressed: () async{
+                      setState(() {
+                        _status = true;
+                        FocusScope.of(context).requestFocus(new FocusNode());
+                      });
 
-                  // String userId = firebaseUser.uid;
+                      // String userId = firebaseUser.uid;
 
-                  // displayProgressDialog(context);
+                      // displayProgressDialog(context);
 
-                  // String response = await userAuth.updateUserInfo(
-                  //   userId: userId,
-                  //   userEmail: userEmailConteroller.text,
-                  //   userName: userNameConteroller.text,
-                  //   userPhone: userPhoneConteroller.text,
-                  // );
+                      // String response = await userAuth.updateUserInfo(
+                      //   userId: userId,
+                      //   userEmail: userEmailConteroller.text,
+                      //   userName: userNameConteroller.text,
+                      //   userPhone: userPhoneConteroller.text,
+                      // );
 
-                  // if(response == "succefull"){
-                  //   closeProgressDialog(context);
-                  //   scaffoldKey.currentState.showSnackBar(SnackBar(content: Text("Successfull"),
-                  //   backgroundColor: Colors.green,
-                  //   ));
-                  // }
-                  // else{
-                  //   closeProgressDialog(context);
-                  //   scaffoldKey.currentState.showSnackBar(SnackBar(content: Text("Failed"),
-                  //   backgroundColor: Colors.green,
-                  //   ));
-                  // }
-                },
-                shape: new RoundedRectangleBorder(
-                    borderRadius: new BorderRadius.circular(20.0)),
-              )),
+                      // if(response == "succefull"){
+                      //   closeProgressDialog(context);
+                      //   scaffoldKey.currentState.showSnackBar(SnackBar(content: Text("Successfull"),
+                      //   backgroundColor: Colors.green,
+                      //   ));
+                      // }
+                      // else{
+                      //   closeProgressDialog(context);
+                      //   scaffoldKey.currentState.showSnackBar(SnackBar(content: Text("Failed"),
+                      //   backgroundColor: Colors.green,
+                      //   ));
+                      // }
+                    },
+                    shape: new RoundedRectangleBorder(
+                        borderRadius: new BorderRadius.circular(20.0)),
+                  )),
             ),
             flex: 2,
           ),
@@ -354,18 +352,18 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
               padding: EdgeInsets.only(left: 10.0),
               child: Container(
                   child: new RaisedButton(
-                child: new Text("Cancel"),
-                textColor: Colors.white,
-                color: Colors.red,
-                onPressed: () {
-                  setState(() {
-                    _status = true;
-                    FocusScope.of(context).requestFocus(new FocusNode());
-                  });
-                },
-                shape: new RoundedRectangleBorder(
-                    borderRadius: new BorderRadius.circular(20.0)),
-              )),
+                    child: new Text("Cancel"),
+                    textColor: Colors.white,
+                    color: Colors.red,
+                    onPressed: () {
+                      setState(() {
+                        _status = true;
+                        FocusScope.of(context).requestFocus(new FocusNode());
+                      });
+                    },
+                    shape: new RoundedRectangleBorder(
+                        borderRadius: new BorderRadius.circular(20.0)),
+                  )),
             ),
             flex: 2,
           ),
@@ -374,7 +372,7 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
     );
   }
 
- Widget _getEditIcon() {
+  Widget _getEditIcon() {
     return new GestureDetector(
       child: new CircleAvatar(
         backgroundColor: Colors.green,

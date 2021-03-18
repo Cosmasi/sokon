@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:sokon/heplers/pushNotificationService.dart';
 import 'package:sokon/providers/cartProvider.dart';
 import 'package:sokon/tools/app_data.dart';
 import 'package:sokon/tools/app_tools.dart';
@@ -22,15 +23,19 @@ class _HomeScreenState extends State<HomeScreen> {
 
   String accountName = "";
   String accountEmail = "";
-  bool isLoggedin ;
+  bool isLoggedin = true;
   String phoneN = "";
 
   Authentication authentication = Authentication();
 
+  @override
+  void initState() {
+    getCurrentUser();
+    super.initState();
+  }
 
 
   Future getCurrentUser() async{
-    // acctPhotoUrl = await getStringDataLocally(key: photoUrl);
     accountName = await getStringDataLocally(key: fullName);
     accountEmail = await getStringDataLocally(key: userEmail);
     isLoggedin = await getBoolDataLocally(key: loggedIn);
@@ -52,7 +57,7 @@ class _HomeScreenState extends State<HomeScreen> {
     }
     _alertDialogue(context, "Do you really want to logout", "Log Out");
   }
-  
+
 
   @override
   Widget build(BuildContext context) {
@@ -73,13 +78,13 @@ class _HomeScreenState extends State<HomeScreen> {
                 color: Colors.green[400],
                 onPressed: (){
                   checkIfLoggedIn();
-                }, 
-                icon: Icon(Icons.exit_to_app, color: Colors.white,), 
+                },
+                icon: Icon(Icons.exit_to_app, color: Colors.white,),
                 label: Text(
-                  isLoggedin == true ? "LogOut" : "LogIn", 
+                  isLoggedin == true ? "LogOut" : "LogIn",
                   style: TextStyle(
-                    fontWeight: FontWeight.bold, 
-                    fontSize: 17.0, 
+                    fontWeight: FontWeight.bold,
+                    fontSize: 17.0,
                     color: Colors.white,
                   ),
                 ),
@@ -87,139 +92,141 @@ class _HomeScreenState extends State<HomeScreen> {
             )
           ],
         ),
-        body: SingleChildScrollView(
-        child: Column(
-            children: [
-              SizedBox(height: 50.0),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  GestureDetector(
-                    onTap: (){
-                      // Navigator.push(context, MaterialPageRoute(
-                      //   builder: (_) => SearchData()));
-                    },
-                    child: GestureDetector(
+        body: Center(
+          child: SingleChildScrollView(
+          child: Column(
+              children: [
+                // SizedBox(height: 50.0),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    GestureDetector(
                       onTap: (){
-                        Navigator.push(context, MaterialPageRoute(builder: (_) => ProfileScreen()));
+                        // Navigator.push(context, MaterialPageRoute(
+                        //   builder: (_) => SearchData()));
+                      },
+                      child: GestureDetector(
+                        onTap: (){
+                          Navigator.push(context, MaterialPageRoute(builder: (_) => ProfileScreen()));
+                        },
+                        child: Card(
+                          elevation: 5.0,
+                          child: Padding(
+                            padding: EdgeInsets.symmetric(vertical: 30.0, horizontal: 17.0),
+                            child: Row(
+                              children: [
+                                Icon(Icons.person, size: 30.0, color: Colors.green),
+                                SizedBox(width: 10.0),
+                                Text('Profile', style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold)),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                     GestureDetector(
+                      onTap: (){
+                        Navigator.push(context, MaterialPageRoute(builder: (_)=>AddProducts()));
                       },
                       child: Card(
                         elevation: 5.0,
                         child: Padding(
-                          padding: EdgeInsets.symmetric(vertical: 30.0, horizontal: 17.0),
+                          padding: EdgeInsets.symmetric(vertical: 30, horizontal: 10.0),
                           child: Row(
                             children: [
-                              Icon(Icons.person, size: 30.0, color: Colors.green),
-                              SizedBox(width: 10.0),
-                              Text('Profile', style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold)),
+                              Icon(Icons.add, size: 30.0, color: Colors.green),
+                              SizedBox(width: 5.0),
+                              Text('Add Product', style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold)),
                             ],
                           ),
                         ),
                       ),
                     ),
-                  ),
-                   GestureDetector(
-                    onTap: (){
-                      Navigator.push(context, MaterialPageRoute(builder: (_)=>AddProducts()));
-                    },
-                    child: Card(
-                      elevation: 5.0,
-                      child: Padding(
-                        padding: EdgeInsets.symmetric(vertical: 30, horizontal: 10.0),
-                        child: Row(
-                          children: [
-                            Icon(Icons.add, size: 30.0, color: Colors.green),
-                            SizedBox(width: 5.0),
-                            Text('Add Product', style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold)),
-                          ],
+                  ],
+                ),
+                SizedBox(height: 25.0),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    GestureDetector(
+                      onTap: (){},
+                      child: Card(
+                        elevation: 5.0,
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(vertical: 30.0, horizontal: 7.0),
+                          child: Row(
+                            children: [
+                              Icon(Icons.notifications, size: 30.0, color: Colors.green),
+                              SizedBox(width: 5.0),
+                              Text('App Orders', style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold)),
+                            ],
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                ],
-              ),
-              SizedBox(height: 25.0),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  GestureDetector(
-                    onTap: (){},
-                    child: Card(
-                      elevation: 5.0,
-                      child: Padding(
-                        padding: EdgeInsets.symmetric(vertical: 30.0, horizontal: 7.0),
-                        child: Row(
-                          children: [
-                            Icon(Icons.notifications, size: 30.0, color: Colors.green),
-                            SizedBox(width: 5.0),
-                            Text('App Orders', style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold)),
-                          ],
+                    GestureDetector(
+                      onTap: (){},
+                      child: Card(
+                        elevation: 5.0,
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(vertical: 30.0, horizontal: 5.0),
+                          child: Row(
+                            children: [
+                              Icon(Icons.history, size: 30.0, color: Colors.green),
+                              SizedBox(width: 5.0),
+                              Text('Orders History', style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold)),
+                            ],
+                          ),
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+                SizedBox(height: 25.0),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    GestureDetector(
+                      onTap: (){
+                        // Navigator.push(context, MaterialPageRoute(builder: (_) => Products()));
+                      },
+                      child: Card(
+                        elevation: 5.0,
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(vertical: 30.0, horizontal: 15.0),
+                          child: Row(
+                            children: [
+                              Icon(Icons.shop, size: 30.0, color: Colors.green),
+                              SizedBox(width: 5.0),
+                              Text('Products', style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold)),
+                            ],
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                  GestureDetector(
-                    onTap: (){},
-                    child: Card(
-                      elevation: 5.0,
-                      child: Padding(
-                        padding: EdgeInsets.symmetric(vertical: 30.0, horizontal: 5.0),
-                        child: Row(
-                          children: [
-                            Icon(Icons.history, size: 30.0, color: Colors.green),
-                            SizedBox(width: 5.0),
-                            Text('Orders History', style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold)),
-                          ],
+                     GestureDetector(
+                      onTap: (){
+                        // Navigator.push(context, MaterialPageRoute(builder: (_)=> AddCategory()));
+                      },
+                      child: Card(
+                        elevation: 5.0,
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(vertical: 30, horizontal: 7.0),
+                          child: Row(
+                            children: [
+                              Icon(Icons.category, size: 30.0, color: Colors.green),
+                              SizedBox(width: 10.0),
+                              Text('Add Category', style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),),
+                            ],
+                          ),
                         ),
                       ),
-                    ),
-                  )
-                ],
-              ),
-              SizedBox(height: 25.0),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  GestureDetector(
-                    onTap: (){
-                      // Navigator.push(context, MaterialPageRoute(builder: (_) => Products()));
-                    },
-                    child: Card(
-                      elevation: 5.0,
-                      child: Padding(
-                        padding: EdgeInsets.symmetric(vertical: 30.0, horizontal: 15.0),
-                        child: Row(
-                          children: [
-                            Icon(Icons.shop, size: 30.0, color: Colors.green),
-                            SizedBox(width: 5.0),
-                            Text('Products', style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold)),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                   GestureDetector(
-                    onTap: (){
-                      // Navigator.push(context, MaterialPageRoute(builder: (_)=> AddCategory()));
-                    },
-                    child: Card(
-                      elevation: 5.0,
-                      child: Padding(
-                        padding: EdgeInsets.symmetric(vertical: 30, horizontal: 7.0),
-                        child: Row(
-                          children: [
-                            Icon(Icons.category, size: 30.0, color: Colors.green),
-                            SizedBox(width: 10.0),
-                            Text('Add Category', style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),),
-                          ],
-                        ),
-                      ),
-                    ),
-                  )
-                ],
-              ),
-              SizedBox(height: 10.0),
-            ],
+                    )
+                  ],
+                ),
+                SizedBox(height: 10.0),
+              ],
+            ),
           ),
         ),
         floatingActionButton: Stack(
@@ -255,17 +262,17 @@ class _HomeScreenState extends State<HomeScreen> {
           title:Text(header),
           content: Text(message),
           actions: <Widget>[
-            FlatButton(
+            TextButton(
               child:Text("Cancel"),
               onPressed: (){
                 Navigator.of(context).pop();
               },
             ),
-            FlatButton(
+            TextButton(
               child:Text("Ok"),
               onPressed: () async {
               setState(() {
-            
+
               });
               bool response = await authentication.logOutUser();
               if(response == true) getCurrentUser();

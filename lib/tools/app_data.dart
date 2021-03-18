@@ -1,12 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_database/firebase_database.dart';
+import 'package:sokon/models/users.dart';
+import 'package:sokon/models/vendors.dart';
 
 // FIREBASE NODES
 const String orderNode = "orders";
 const String users = "users";
-
-// FIREBASE REFERENCE
-DatabaseReference usersRef = FirebaseDatabase.instance.reference().child(users);
+const String vendors = "vendors";
 
 
 // FIREBASE USER
@@ -40,6 +39,12 @@ const String vendorPhotoUrl = "vendorPhotoUrl";
 const String vendorLoggedIn = "loggedIn";
 const String vendorDate = "vendorDate";
 String vendorCreated = "vendorCreated";
+
+//VENDORS INFO
+Vendors vendorsInfo;
+
+//USERS INFO
+UsersModel usersInfo;
 
 List<String> localQuantity = [
   "Select a quantity",

@@ -90,8 +90,6 @@ class _UserLogInState extends State<UserLogIn> {
     if(response == "successful"){
       closeProgressDialog(context);
       Navigator.pushNamedAndRemoveUntil(context, HomeScreen.id, (route) => false);
-      // Route route = MaterialPageRoute(builder: (_) => HomePage());
-      // Navigator.pushReplacement(context, route);
     }
   }
 }

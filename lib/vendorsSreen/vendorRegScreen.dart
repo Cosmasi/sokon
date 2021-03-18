@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:sokon/tools/app_tools.dart';
+import 'package:sokon/vendorsSreen/vendorHomeScreen.dart';
+
+import '../authentication.dart';
 
 class VendorRegistration extends StatefulWidget {
+  static const String id = 'vendorReg';
   @override
   _VendorRegistrationState createState() => _VendorRegistrationState();
 }
@@ -15,6 +19,8 @@ class _VendorRegistrationState extends State<VendorRegistration> {
   TextEditingController phoneNumber = TextEditingController();
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
+
+  Authentication authentication = Authentication();
 
   @override
   Widget build(BuildContext context) {
@@ -78,8 +84,7 @@ class _VendorRegistrationState extends State<VendorRegistration> {
               buttonPadding: 15.0,
               buttoncolor: Colors.black,
               btnColor: Colors.white,
-              // onBtnclick: verifyDetails,
-              onBtnclick: (){}
+              onBtnclick: verifyDetails,
             ),
             SizedBox(height: 10.0),
             Text('Already have an account? Log in here',
@@ -90,5 +95,50 @@ class _VendorRegistrationState extends State<VendorRegistration> {
         ),
       ),
     );
+  }
+
+
+  verifyDetails() async{
+    if (fullname.text == "") {
+      showSnackBar(message: " Full name cannot be empty", key: scaffoldKey);
+      return;
+    }
+    if (email.text == "") {
+      showSnackBar(message: "Email cannot be empty", key: scaffoldKey);
+      return;
+    }
+    if (password.text == "" || password.text.length < 6) {
+      showSnackBar(message: "Password cannot be empty or passord is too short",key: scaffoldKey);
+      return;
+    }
+    if (re_password.text == "") {
+      showSnackBar(message: "Please re-enter your password", key: scaffoldKey);
+      return;
+    }
+    if (password.text != re_password.text) {
+      showSnackBar(message: "Passwords don't match", key: scaffoldKey);
+      return;
+    }
+    if (phoneNumber.text == "") {
+      showSnackBar(message: "Please enter your phone number", key: scaffoldKey);
+      return;
+    }
+
+    displayProgressDialog(context);
+
+    String response = await authentication.createVendor(
+        vName: fullname.text.toLowerCase(),
+        vEmail: email.text.toLowerCase(),
+        vPassword: password.text.toLowerCase(),
+        vPhone: phoneNumber.text.toLowerCase()
+    );
+
+    if(response == "successful"){
+      closeProgressDialog(context);
+      Navigator.pushNamedAndRemoveUntil(context, VendorHomeScreen.id, (route) => false);
+    }else{
+      closeProgressDialog(context);
+      showSnackBar(message: "Error", key: scaffoldKey);
+    }
   }
 }
