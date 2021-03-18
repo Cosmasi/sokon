@@ -1,8 +1,10 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart' as firebase_core;
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sokon/providers/cartProvider.dart';
 import 'package:sokon/providers/ordersProvider.dart';
+import 'package:sokon/tools/app_data.dart';
 import 'package:sokon/usersScreen/addProducts.dart';
 import 'package:sokon/usersScreen/authMainScreen.dart';
 import 'package:sokon/usersScreen/cartScreen.dart';

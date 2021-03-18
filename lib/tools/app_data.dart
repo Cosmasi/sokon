@@ -12,6 +12,7 @@ const String vendors = "vendors";
 User firebaseUser;
 FirebaseAuth auth = FirebaseAuth.instance;
 
+
 // PRODUCTS
 const String productDescription = "productDescription";
 const String productQuantity = "productQuantity";
@@ -39,6 +40,8 @@ const String vendorPhotoUrl = "vendorPhotoUrl";
 const String vendorLoggedIn = "loggedIn";
 const String vendorDate = "vendorDate";
 String vendorCreated = "vendorCreated";
+
+String userId;
 
 //VENDORS INFO
 Vendors vendorsInfo;

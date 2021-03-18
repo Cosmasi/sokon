@@ -120,7 +120,8 @@ class _AddProductsState extends State<AddProducts> {
                 onBtnclick: () {
                   addNewProduct(context);
                   clearInputData();
-                  Navigator.push(context, MaterialPageRoute(builder: (_) => HomeScreen()));
+                  Navigator.pushNamedAndRemoveUntil(context, HomeScreen.id, (route) => false);
+                  // Navigator.push(context, MaterialPageRoute(builder: (_) => HomeScreen()));
                   scaffoldKey.currentState.showSnackBar(SnackBar(
                     backgroundColor: Colors.green,
                     content: Text('Product added to the cart'),

@@ -6,6 +6,7 @@ import 'package:sokon/tools/app_data.dart';
 import 'package:sokon/tools/app_tools.dart';
 import 'package:sokon/usersScreen/addProducts.dart';
 import 'package:sokon/usersScreen/authMainScreen.dart';
+import 'package:sokon/usersScreen/ordersScreen.dart';
 import 'package:sokon/usersScreen/profileScreen.dart';
 import 'package:sokon/vendorsSreen/vendorAuthMainScreen.dart';
 
@@ -40,6 +41,8 @@ class _HomeScreenState extends State<HomeScreen> {
     accountEmail = await getStringDataLocally(key: userEmail);
     isLoggedin = await getBoolDataLocally(key: loggedIn);
     phoneN = await getStringDataLocally(key: phoneNumber);
+    userId = await getStringDataLocally(key: userID);
+    print("user_id:: $userId");
     print(await getStringDataLocally(key: phoneNumber));
     accountName == null ? accountName = "Guest User" : accountName;
     accountEmail == null ? accountEmail = "guestuser@gmail.com" : accountEmail;
@@ -149,7 +152,9 @@ class _HomeScreenState extends State<HomeScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     GestureDetector(
-                      onTap: (){},
+                      onTap: (){
+                        Navigator.push(context, MaterialPageRoute(builder: (_) => OrdersScreen()));
+                      },
                       child: Card(
                         elevation: 5.0,
                         child: Padding(

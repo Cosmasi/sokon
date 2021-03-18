@@ -16,14 +16,17 @@ class PushNotificationService{
     fcm.configure(
       onMessage: (Map<String, dynamic> message) async {
         print("onMessage: $message");
+        getOrderID(message);
       },
 
       onLaunch: (Map<String, dynamic> message) async {
         print("onLaunch: $message");
+        getOrderID(message);
       },
 
       onResume: (Map<String, dynamic> message) async {
         print("onResume: $message");
+        getOrderID(message);
       },
 
     );
@@ -43,4 +46,21 @@ class PushNotificationService{
 
     return token;
   }
+
+  String getOrderID(Map<String, dynamic> message){
+
+    String orderID = '';
+
+    if(Platform.isAndroid){
+      orderID = message['data']['order_id'];
+      print('order_id:: $orderID');
+    }
+    else{
+      orderID = message['data']['order_id'];
+      print('order_id:: $orderID');
+    }
+
+    return orderID;
+  }
+
 }
