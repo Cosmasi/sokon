@@ -41,8 +41,6 @@ class _HomeScreenState extends State<HomeScreen> {
     accountEmail = await getStringDataLocally(key: userEmail);
     isLoggedin = await getBoolDataLocally(key: loggedIn);
     phoneN = await getStringDataLocally(key: phoneNumber);
-    userId = await getStringDataLocally(key: userID);
-    print("user_id:: $userId");
     print(await getStringDataLocally(key: phoneNumber));
     accountName == null ? accountName = "Guest User" : accountName;
     accountEmail == null ? accountEmail = "guestuser@gmail.com" : accountEmail;

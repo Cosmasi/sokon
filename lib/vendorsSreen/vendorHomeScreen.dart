@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:sokon/heplers/pushNotificationService.dart';
 import 'package:sokon/vendorsSreen/vendorAuthMainScreen.dart';
 import 'package:sokon/vendorsSreen/vendorProfile.dart';
+import 'package:sokon/vendorsSreen/vendorsOrder.dart';
 
 import '../authentication.dart';
 
@@ -17,14 +19,14 @@ class _VendorHomeScreenState extends State<VendorHomeScreen> {
 
   @override
   void initState() {
-    getCurrentVendor();
+    getCurrentVendor(context);
     super.initState();
   }
 
-  Future getCurrentVendor() async{
+  Future getCurrentVendor(context) async{
     PushNotificationService pushNotificationService = PushNotificationService();
 
-    pushNotificationService.initialize();
+    pushNotificationService.initialize(context);
     pushNotificationService.getToken();
   }
 
@@ -118,14 +120,34 @@ class _VendorHomeScreenState extends State<VendorHomeScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     GestureDetector(
-                      onTap: (){},
+                      onTap: (){
+                        Navigator.push(context, MaterialPageRoute(builder: (_) => VendorsOrder()));
+                      },
                       child: Card(
                         elevation: 5.0,
                         child: Padding(
                           padding: EdgeInsets.symmetric(vertical: 30.0, horizontal: 7.0),
                           child: Row(
                             children: [
-                              Icon(Icons.notifications, size: 30.0, color: Colors.green),
+                              Stack(
+                                children: [
+                                  Icon(Icons.notifications, size: 30.0, color: Colors.green),
+                                  Positioned(
+                                    left: 8.0,
+                                    child: Container(
+                                      width: 16.0,
+                                      height: 16.0,
+                                      decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.circular(8.0),
+                                          color: Colors.red
+                                      ),
+                                      child: Center(
+                                        child: Text("1", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),),
+                                      )
+                                    ),
+                                  )
+                                ],
+                              ),
                               SizedBox(width: 5.0),
                               Text('App Orders', style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold)),
                             ],

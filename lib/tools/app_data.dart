@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:sokon/models/message.dart';
 import 'package:sokon/models/users.dart';
 import 'package:sokon/models/vendors.dart';
 
@@ -12,10 +13,14 @@ const String vendors = "vendors";
 User firebaseUser;
 FirebaseAuth auth = FirebaseAuth.instance;
 
+Message messageInfo;
+
 
 // PRODUCTS
 const String productDescription = "productDescription";
 const String productQuantity = "productQuantity";
+
+// String orderID = '';
 
 
 // USER DETAILS
@@ -41,7 +46,6 @@ const String vendorLoggedIn = "loggedIn";
 const String vendorDate = "vendorDate";
 String vendorCreated = "vendorCreated";
 
-String userId;
 
 //VENDORS INFO
 Vendors vendorsInfo;
