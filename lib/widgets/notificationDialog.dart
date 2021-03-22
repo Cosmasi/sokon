@@ -59,20 +59,43 @@ class NotificationDialog extends StatelessWidget {
               ),
             ),
             Padding(
-              padding: EdgeInsets.all(16.0),
+              padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 20.0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  TextButton(
-                    onPressed: (){},
-                      child: Text("ACCEPT"),
+                  GestureDetector(
+                    onTap: (){
+                      assetsAudioPlayer.stop();
+                    },
+                    child: Container(
+                      width: 100.0,
+                      height: 30.0,
+                      decoration: BoxDecoration(
+                        color: Colors.green,
+                        borderRadius: BorderRadius.circular(15.0)
+                      ),
+                      child: Center(
+                        child: Text("ACCEPT", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),),
+                      )
+                    ),
                   ),
-                  TextButton(
-                    onPressed: (){
+
+                  GestureDetector(
+                    onTap: (){
                       assetsAudioPlayer.stop();
                       Navigator.pop(context);
                     },
-                    child: Text("DECLINE"),
+                    child: Container(
+                        width: 100.0,
+                        height: 30.0,
+                        decoration: BoxDecoration(
+                            color: Colors.green,
+                            borderRadius: BorderRadius.circular(15.0)
+                        ),
+                        child: Center(
+                          child: Text("DECLINE", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),),
+                        )
+                    ),
                   ),
                 ],
               ),
