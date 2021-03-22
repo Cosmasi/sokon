@@ -1,3 +1,4 @@
+import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:sokon/models/message.dart';
 import 'package:sokon/models/users.dart';
@@ -14,6 +15,9 @@ User firebaseUser;
 FirebaseAuth auth = FirebaseAuth.instance;
 
 Message messageInfo;
+
+final assetsAudioPlayer = AssetsAudioPlayer();
+
 
 
 // PRODUCTS

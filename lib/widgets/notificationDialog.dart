@@ -1,9 +1,9 @@
-
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:sokon/models/ordersItem.dart';
+import 'package:sokon/tools/app_data.dart';
 
 class NotificationDialog extends StatelessWidget {
-
 
   final List<OrderItems> orderItem;
 
@@ -12,6 +12,7 @@ class NotificationDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Dialog(
+      insetPadding: EdgeInsets.symmetric(vertical: 60, horizontal: 30),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10.0),
       ),
@@ -31,49 +32,56 @@ class NotificationDialog extends StatelessWidget {
             Image.asset('assets/images/taxi.png', width: 100,),
             SizedBox(height: 16.0,),
             Text('NEW ORDER REQUEST', style: TextStyle(fontSize: 18),),
-            // SizedBox(height: 30.0,),
+            Divider(thickness: 1.0,),
             Expanded(
               child: Padding(
-                padding: EdgeInsets.all(16.0),
+                padding: EdgeInsets.symmetric(horizontal: 16.0),
                 child: ListView.builder(
+                  scrollDirection: Axis.vertical,
                   itemCount: orderItem.length,
-                  itemBuilder: (_, index) => ListTile(
-                    title: Text("${orderItem[index].products.map((e) => e.title).toList()}"),
-                  ),
+                    shrinkWrap: true,
+                  itemBuilder: (_, index) =>  Row(
+                    children: [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          SingleChildScrollView(
+                            child: Text(
+                              "${orderItem[index].products.map((e) => e.title).join("\n")} \n",
+                              style: TextStyle(fontSize: 18.0),
+                            ),
+                          )
+                        ],
+                      ),
+                    ],
+                  )
                 ),
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.all(16.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  TextButton(
+                    onPressed: (){},
+                      child: Text("ACCEPT"),
+                  ),
+                  TextButton(
+                    onPressed: (){
+                      assetsAudioPlayer.stop();
+                      Navigator.pop(context);
+                    },
+                    child: Text("DECLINE"),
+                  ),
+                ],
               ),
             )
           ],
         )
-        // Column(
-        //   mainAxisSize: MainAxisSize.min,
-        //   children: <Widget>[
-        //
-        //     SizedBox(height: 30.0,),
-        //
-        //     // Image.asset('images/taxi.png', width: 100,),
-        //
-        //     SizedBox(height: 16.0,),
-        //
-        //     Text('NEW TRIP REQUEST', style: TextStyle(fontSize: 18),),
-        //
-        //     SizedBox(height: 30.0,),
-        //
-        //     Padding(
-        //       padding: EdgeInsets.all(16.0),
-        //       child: ListView.builder(
-        //         itemCount: orderItem.length,
-        //         itemBuilder: (_, index) => ListTile(
-        //           title: Text("${orderItem[index].title}"),
-        //         ),
-        //       )
-        //     ),
-        //   ],
-        // ),
       ),
     );
   }
-
-
 }
+
 

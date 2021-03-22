@@ -28,6 +28,7 @@ dependencies:
   geolocator: ^6.2.1
   flutter_geofire: ^1.0.3
   firebase_messaging: ^5.1.4
+  assets_audio_player: ^2.0.13+1
 
 dev_dependencies:
   flutter_test:
@@ -40,6 +41,7 @@ flutter:
 
   assets:
     - assets/images/
+    - sounds/
 
   # fonts:
   #   - family: Schyler
