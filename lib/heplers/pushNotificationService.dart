@@ -6,6 +6,7 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:sokon/main.dart';
 import 'package:sokon/models/cartItems.dart';
 import 'package:sokon/models/ordersItem.dart';
 import 'package:sokon/tools/app_data.dart';
@@ -86,11 +87,13 @@ class PushNotificationService{
       OrderItems data = OrderItems(
         id: key,
         dateTime: DateTime.parse(value['dateTime'].toString()),
+        user_id: value["userId"],
         products: (value['products'] as List<dynamic>).map((items) =>
             CartItems(
               id: items['id'].toString(),
               quantity: int.parse(items['quantity'].toString()),
               title: items['title'],
+              price: double.parse(items['price'].toString()),
             ),).toList(),
       );
       // print(data);
@@ -110,5 +113,39 @@ class PushNotificationService{
     );
 
     return Future.value(true);
+  }
+
+
+  static sendNotification(String token, context, String customerId) async{
+
+    Map<String, String> headerMap = {
+      'Content-Type': 'application/json',
+      'Authorization': 'key=$serverKey',
+    };
+
+    Map notificationMap = {
+      'title': 'NEW TRIP REQUEST',
+      'body': 'Destination'
+    };
+
+    Map dataMap = {
+      'click_action': 'FLUTTER_NOTIFICATION_CLICK',
+      'id': '1',
+      'status': 'done',
+      'ride_id': customerId,
+    };
+
+    Map bodyMap = {
+      'notification': notificationMap,
+      'data': dataMap,
+      'priority': 'high',
+      'to': token
+    };
+
+    var response = await http.post('https://fcm.googleapis.com/fcm/send',
+        headers: headerMap, body: jsonEncode(bodyMap),
+    );
+
+    print(response.body);
   }
 }

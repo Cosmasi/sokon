@@ -44,7 +44,8 @@ class _VendorProfileState extends State<VendorProfile> {
         vendorEmail: snapshot.value[vendorEmail],
         vendorPhone: snapshot.value[vendorPhoneNumber],
       );
-      print(vendors.vendorName);
+      // print(vendors.vendorName);
+      print(vendors.vendorId);
       vendorsInfo = vendors;
       setState(() {
 

@@ -1,7 +1,11 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:sokon/heplers/pushNotificationService.dart';
 import 'package:sokon/providers/cartProvider.dart';
 import 'package:sokon/providers/ordersProvider.dart';
+import 'package:sokon/tools/app_data.dart';
 import 'package:sokon/widgets/cart_widgets.dart';
 
 class CartScreen extends StatefulWidget {
@@ -43,7 +47,8 @@ class _CartScreenState extends State<CartScreen> {
                   cart.items.values.toList()[index].id,
                   cart.items.keys.toList()[index],
                   cart.items.values.toList()[index].quantity,
-                  cart.items.values.toList()[index].title
+                  cart.items.values.toList()[index].title,
+                  cart.items.values.toList()[index].price,
                 ),
               )
             )
@@ -81,6 +86,7 @@ class _OderButtonState extends State<OderButton> {
         _isLoading = false;
       });
       widget.cart.clearCart();
+
     },
       textColor: Theme.of(context).primaryColor,
     );

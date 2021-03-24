@@ -8,8 +8,9 @@ class CartWidget extends StatefulWidget {
   final String productId;
   int quantity;
   final String title;
+  final double price;
 
-  CartWidget(this.id,this.productId,this.quantity,this.title);
+  CartWidget(this.id,this.productId,this.quantity,this.title,this.price);
 
   @override
   _CartWidgetState createState() => _CartWidgetState();

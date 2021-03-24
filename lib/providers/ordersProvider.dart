@@ -23,10 +23,12 @@ class OrdersProvider with ChangeNotifier{
       "products": cartProducts.map((product) => {
         "id": product.id,
         "title": product.title,
-        "quantity": product.quantity,
-        "selectedQty": product.selectedQty
+        "quantity": product.quantity.toString(),
+        "price": product.price.toString(),
+        "selectedQty": product.selectedQty.toString()
       }).toList(),
       "dateTime": timestamp.toIso8601String(),
+      "userId": currentUser.uid,
     });
     _orders.insert(0, OrderItems(
       id: ordersKey,
