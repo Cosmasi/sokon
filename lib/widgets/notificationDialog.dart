@@ -29,12 +29,13 @@ class _NotificationDialogState extends State<NotificationDialog> {
       _pdtTitle = widget.orderItem[i].products.map((e) => e.title).join("\n").toString();
       // _price = widget.orderItem[i].products.map((e) => e.price).join("\n").toString();
 
-      // setState(() {
-      //   _priceController.text = _price;
-      // });
+      setState(() {
+        _priceController.text = _price;
+      });
     }
     print("USER ID:: $_userId");
-    print("USER DATA:: $_pdtTitle");
+    // print("USER DATA:: $_pdtTitle");
+    // print("USER DATA:: $_price");
   }
 
 
@@ -70,7 +71,6 @@ class _NotificationDialogState extends State<NotificationDialog> {
                   itemCount: widget.orderItem.length,
                   itemBuilder: (_, index) => Column(
                     children: widget.orderItem[index].products.map((e){
-                      // _priceController.text = e.price.toString();
                       return Row(
                         children: [
                           Expanded(
@@ -90,10 +90,10 @@ class _NotificationDialogState extends State<NotificationDialog> {
                                   borderRadius: BorderRadius.circular(15.0),
                                   color: Colors.grey[200]
                               ),
-                              child: Text(e.price.toString(), style: TextStyle(fontSize: 20.0))
-                              //
+                              child: Text("", style: TextStyle(fontSize: 20.0))
+                              
                               // TextField(
-                              //   controller: _priceController,
+                              //   // controller: _priceController,
                               //   decoration: InputDecoration(
                               //     border: InputBorder.none,
                               //     hintText: "0.0",
@@ -126,7 +126,7 @@ class _NotificationDialogState extends State<NotificationDialog> {
                         borderRadius: BorderRadius.circular(20.0)
                       ),
                       child: Center(
-                        child: Text("SEND", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),),
+                        child: Text("RE-SEND", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),),
                       )
                     ),
                   ),

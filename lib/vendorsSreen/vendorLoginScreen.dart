@@ -1,5 +1,11 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_geofire/flutter_geofire.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:sokon/tools/app_data.dart';
 import 'package:sokon/tools/app_tools.dart';
+import 'package:sokon/usersScreen/homeScreen.dart';
 import 'package:sokon/vendorsSreen/vendorHomeScreen.dart';
 
 import '../authentication.dart';
@@ -17,6 +23,9 @@ class _VendorsLogInScreenState extends State<VendorsLogInScreen> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
   Authentication authentication = Authentication();
+
+  DatabaseReference tripRequestRef;
+  User currentUser;
 
   @override
   Widget build(BuildContext context) {
@@ -53,14 +62,14 @@ class _VendorsLogInScreenState extends State<VendorsLogInScreen> {
             ),
             SizedBox(height:2.0),
             appButton(
-              buttonText: 'Login',
-              buttonPadding: 10.0 ,
-              buttoncolor: Colors.black,
-              btnColor: Colors.white,
-              onBtnclick: verifyLogin,
+                buttonText: 'Login',
+                buttonPadding: 10.0 ,
+                buttoncolor: Colors.black,
+                btnColor: Colors.white,
+                onBtnclick: verifyLogin,
             ),
             SizedBox(height: 10.0),
-            Text('Forgot password ?', 
+            Text('Forgot password ?',
               style: TextStyle(fontStyle: FontStyle.italic, fontSize: 18),
             ),
             SizedBox(height: 20.0),
@@ -70,25 +79,46 @@ class _VendorsLogInScreenState extends State<VendorsLogInScreen> {
     );
   }
 
-  verifyLogin() async{
+  void verifyLogin() async{
     if (email.text == "") {
-      showSnackBar(message: "Email cannot be empty", key: scaffoldKey);
-      return;
+    showSnackBar(message: "Email cannot be empty", key: scaffoldKey);
+    return;
     } else if (password.text == "") {
-      showSnackBar(message: "Password cannot be empty", key: scaffoldKey);
-      return;
+    showSnackBar(message: "Password cannot be empty", key: scaffoldKey);
+    return;
     }
 
     displayProgressDialog(context);
 
     String response = await authentication.loginVendor(
-        vEmail: email.text.toLowerCase(),
-        vPassword: password.text.toLowerCase()
+    vEmail: email.text.toString(),
+    vPassword: password.text.toString(),
     );
 
     if(response == "successful"){
-      closeProgressDialog(context);
-      Navigator.pushNamedAndRemoveUntil(context, VendorHomeScreen.id, (route) => false);
+    closeProgressDialog(context);
+    goOnline();
+    Navigator.pushNamedAndRemoveUntil(context, VendorHomeScreen.id, (route) => false);
+    }
+  }
+
+  void goOnline() async {
+    try{
+      currentUser = FirebaseAuth.instance.currentUser;
+      Geofire.initialize('vendorsAvailable');
+      Position position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.bestForNavigation);
+
+      Geofire.setLocation(currentUser.uid, position.latitude, position.longitude);
+      tripRequestRef = FirebaseDatabase.instance.reference().child(vendors)
+          .child(currentUser.uid).child("newtrip");
+
+      tripRequestRef.set('waiting');
+
+      tripRequestRef.onValue.listen((event) {
+
+      });
+    }catch(e){
+      print(e);
     }
   }
 }

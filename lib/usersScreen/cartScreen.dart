@@ -19,6 +19,7 @@ class _CartScreenState extends State<CartScreen> {
   Widget build(BuildContext context) {
     Size screenSize = MediaQuery.of(context).size;
     final cart = Provider.of<CartProvider>(context);
+    print("TOKEN ON CART:: $token");
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
@@ -48,7 +49,7 @@ class _CartScreenState extends State<CartScreen> {
                   cart.items.keys.toList()[index],
                   cart.items.values.toList()[index].quantity,
                   cart.items.values.toList()[index].title,
-                  cart.items.values.toList()[index].price,
+                  // cart.items.values.toList()[index].price,
                 ),
               )
             )
@@ -71,6 +72,8 @@ class OderButton extends StatefulWidget {
 class _OderButtonState extends State<OderButton> {
   bool _isLoading = false;
 
+  User _user = FirebaseAuth.instance.currentUser;
+
   @override
   Widget build(BuildContext context) {
     return FlatButton(
@@ -85,8 +88,8 @@ class _OderButtonState extends State<OderButton> {
       setState(() {
         _isLoading = false;
       });
+      PushNotificationService.sendNotification(token, context, _user.uid);
       widget.cart.clearCart();
-
     },
       textColor: Theme.of(context).primaryColor,
     );

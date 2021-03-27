@@ -4,7 +4,7 @@ class CartItems{
   final String title;
   final String productDescription;
   int quantity;
-  final double price;
+  // final double price;
   final String selectedQty;
 
   CartItems({
@@ -13,7 +13,7 @@ class CartItems{
     this.title,
     this.productDescription,
     this.selectedQty,
-    this.price,
+    // this.price,
 
   });
 }

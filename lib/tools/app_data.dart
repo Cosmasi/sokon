@@ -1,5 +1,6 @@
 import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:sokon/models/message.dart';
 import 'package:sokon/models/users.dart';
 import 'package:sokon/models/vendors.dart';
@@ -9,14 +10,17 @@ const String orderNode = "orders";
 const String users = "users";
 const String vendors = "vendors";
 
-
 // FIREBASE USER
 User firebaseUser;
+
 FirebaseAuth auth = FirebaseAuth.instance;
 
 Message messageInfo;
 
 final assetsAudioPlayer = AssetsAudioPlayer();
+
+//TOKEN
+String token;
 
 String serverKey = 'AAAA1hlL34g:APA91bGj0VsbVe26VxU57Koq93pdoC3Kgv8c2oyw59E5qaUbnNYbYa4_V8Ep1JHXpjwi68OEkxlaeVUV5tms8OsyYR6gZXBwYFKgieWJbxUNGqJAULdPpahOrPIBK3TOE7_SpxM8ab3L';
 

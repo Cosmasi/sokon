@@ -1,6 +1,9 @@
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_geofire/flutter_geofire.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:provider/provider.dart';
-import 'package:sokon/heplers/pushNotificationService.dart';
+import 'package:sokon/models/nearByVendor.dart';
 import 'package:sokon/providers/cartProvider.dart';
 import 'package:sokon/tools/app_data.dart';
 import 'package:sokon/tools/app_tools.dart';
@@ -27,12 +30,31 @@ class _HomeScreenState extends State<HomeScreen> {
   bool isLoggedin = true;
   String phoneN = "";
 
+  String vendorName;
+  String vendorPhone;
+
   Authentication authentication = Authentication();
+
 
   @override
   void initState() {
     getCurrentUser();
+    // startGeoFire();
     super.initState();
+  }
+  
+  void getVendorInfo(NearbyVendor nearbyVendor) {
+    DatabaseReference vendorRef = FirebaseDatabase.instance.reference()
+    .child(vendors).child(nearbyVendor.key);
+
+    vendorRef.once().then((DataSnapshot snapshot){
+      if(snapshot.value !=null){
+        token = snapshot.value['token'];
+        vendorName = snapshot.value['vendorName'].toString();
+        vendorPhone = snapshot.value['vendorPhoneNumber'];
+      }
+    });
+    print("VENDOR TOKEN:: $token}");
   }
 
 
@@ -64,6 +86,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     final cart = Provider.of<CartProvider>(context);
     screenSize = MediaQuery.of(context).size;
+    startGeoFire();
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
@@ -286,5 +309,49 @@ class _HomeScreenState extends State<HomeScreen> {
         );
       }
     );
+  }
+
+
+
+  void startGeoFire() async{
+    Geofire.initialize('vendorsAvailable');
+    Position position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.bestForNavigation);
+
+    Geofire.queryAtLocation(position.latitude, position.longitude, 5).listen((map) {
+      print(map);
+      if (map != null) {
+        var callBack = map['callBack'];
+
+        //latitude will be retrieved from map['latitude']
+        //longitude will be retrieved from map['longitude']
+
+        switch (callBack) {
+          case Geofire.onKeyEntered:
+            // keysRetrieved.add(map["key"]);
+           NearbyVendor nearbyVendor = NearbyVendor(
+            key: map['key'],
+            latitude: map['latitude'],
+            longitude: map['longitude']
+          );
+           getVendorInfo(nearbyVendor);
+           break;
+
+          case Geofire.onKeyExited:
+            // keysRetrieved.remove(map["key"]);
+            break;
+
+          case Geofire.onKeyMoved:
+          // Update your key's location
+            break;
+
+          case Geofire.onGeoQueryReady:
+          // All Intial Data is loaded
+            print(map['result']);
+
+            break;
+        }
+      }
+    });
+    // setState(() {});
   }
 }

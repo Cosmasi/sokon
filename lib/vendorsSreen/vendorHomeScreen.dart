@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:sokon/heplers/pushNotificationService.dart';
 import 'package:sokon/vendorsSreen/vendorAuthMainScreen.dart';
 import 'package:sokon/vendorsSreen/vendorProfile.dart';

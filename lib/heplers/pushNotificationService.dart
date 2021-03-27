@@ -11,7 +11,9 @@ import 'package:sokon/models/cartItems.dart';
 import 'package:sokon/models/ordersItem.dart';
 import 'package:sokon/tools/app_data.dart';
 import 'package:http/http.dart' as http;
+import 'package:sokon/tools/app_tools.dart';
 import 'package:sokon/widgets/notificationDialog.dart';
+import 'package:sokon/widgets/progressDialog.dart';
 
 class PushNotificationService{
 
@@ -93,7 +95,7 @@ class PushNotificationService{
               id: items['id'].toString(),
               quantity: int.parse(items['quantity'].toString()),
               title: items['title'],
-              price: double.parse(items['price'].toString()),
+              // price: double.parse(items['price'].toString()),
             ),).toList(),
       );
       // print(data);
@@ -118,6 +120,12 @@ class PushNotificationService{
 
   static sendNotification(String token, context, String customerId) async{
 
+    showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (_) => ProgressDialog(status: "Sending order...",),
+    );
+
     Map<String, String> headerMap = {
       'Content-Type': 'application/json',
       'Authorization': 'key=$serverKey',
@@ -125,14 +133,14 @@ class PushNotificationService{
 
     Map notificationMap = {
       'title': 'NEW TRIP REQUEST',
-      'body': 'Destination'
+      'body': '$customerId'
     };
 
     Map dataMap = {
       'click_action': 'FLUTTER_NOTIFICATION_CLICK',
       'id': '1',
       'status': 'done',
-      'ride_id': customerId,
+      'order_id': customerId,
     };
 
     Map bodyMap = {
@@ -146,6 +154,7 @@ class PushNotificationService{
         headers: headerMap, body: jsonEncode(bodyMap),
     );
 
+    closeProgressDialog(context);
     print(response.body);
   }
 }
