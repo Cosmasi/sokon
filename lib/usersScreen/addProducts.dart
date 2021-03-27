@@ -31,6 +31,17 @@ class _AddProductsState extends State<AddProducts> {
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
+  var focusProduct = FocusNode();
+
+  bool focused = false;
+
+  void setFocus(){
+    if(!focused){
+      FocusScope.of(context).requestFocus(focusProduct);
+      focused = true;
+    }
+  }
+
   @override
   void initState() {
     quantityList = List.from(localQuantity);
@@ -41,6 +52,7 @@ class _AddProductsState extends State<AddProducts> {
   
   @override
   Widget build(BuildContext context) {
+    setFocus();
     final cart = Provider.of<CartProvider>(context);
     return SafeArea(
       child: Scaffold(
@@ -85,6 +97,7 @@ class _AddProductsState extends State<AddProducts> {
 
               productTextField(
                 controller: productTitleController,
+                focusNode: focusProduct,
                 boxColor: Colors.white,
                 textTitle: "Product name", 
                 texHint: "Enter Product name",

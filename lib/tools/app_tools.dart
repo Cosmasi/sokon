@@ -93,6 +93,7 @@ Widget productTextField(
     double height,
     Color boxColor,
     TextEditingController controller,
+      FocusNode focusNode,
     int maxlines,
     TextInputType textType}) {
   //sidePadding == null ? sidePadding = 0.0 :sidePadding;
@@ -126,6 +127,7 @@ Widget productTextField(
                 padding: const EdgeInsets.only(left: 8.0, right: 8.0),
                 child: TextField(
                   controller: controller,
+                  focusNode: focusNode,
                   keyboardType: textType == null
                       ? textType = TextInputType.text
                       : textType,
