@@ -25,10 +25,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   Size screenSize;
 
-  String accountName = "";
-  String accountEmail = "";
-  bool isLoggedin = true;
-  String phoneN = "";
+
 
   String vendorName;
   String vendorPhone;

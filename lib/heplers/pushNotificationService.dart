@@ -79,17 +79,27 @@ class PushNotificationService{
 
 
   Future<bool> fetchUserOrders(String id, context) async{
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (_) => ProgressDialog(status: "Fetching order...",),
+    );
+
     final http.Response response = await
     http.get("https://sokon-79b29-default-rtdb.firebaseio.com/orders/$id.json");
+    closeProgressDialog(context);
+
     final Map<String, dynamic> ordersData = json.decode(response.body);
 
-    List<OrderItems> loadeOrders = [];
+    List<OrderItems> loaderOrders = [];
 
     ordersData.forEach((key, value) {
       OrderItems data = OrderItems(
         id: key,
         dateTime: DateTime.parse(value['dateTime'].toString()),
         user_id: value["userId"],
+        username: value["userName"],
+        phoneNumber: value["phone"],
         products: (value['products'] as List<dynamic>).map((items) =>
             CartItems(
               id: items['id'].toString(),
@@ -99,9 +109,9 @@ class PushNotificationService{
             ),).toList(),
       );
       // print(data);
-      loadeOrders.add(data);
+      loaderOrders.add(data);
     });
-    _ordersReq = loadeOrders.reversed.toList();
+    _ordersReq = loaderOrders.reversed.toList();
 
     assetsAudioPlayer.open(
       Audio('sounds/alert.mp3'),
@@ -119,7 +129,6 @@ class PushNotificationService{
 
 
   static sendNotification(String token, context, String customerId) async{
-
     showDialog(
         context: context,
         barrierDismissible: false,
@@ -133,7 +142,7 @@ class PushNotificationService{
 
     Map notificationMap = {
       'title': 'NEW TRIP REQUEST',
-      'body': '$customerId'
+      'body': 'destination'
     };
 
     Map dataMap = {

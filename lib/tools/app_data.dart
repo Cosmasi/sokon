@@ -30,7 +30,11 @@ String serverKey = 'AAAA1hlL34g:APA91bGj0VsbVe26VxU57Koq93pdoC3Kgv8c2oyw59E5qaUb
 const String productDescription = "productDescription";
 const String productQuantity = "productQuantity";
 
-// String orderID = '';
+// USERS INFO
+String accountName = "";
+String accountEmail = "";
+bool isLoggedin = true;
+String phoneN = "";
 
 
 // USER DETAILS

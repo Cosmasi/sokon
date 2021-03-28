@@ -17,10 +17,22 @@ class _UserLogInState extends State<UserLogIn> {
   TextEditingController password = TextEditingController();
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
+  var focusLogin = FocusNode();
+
+  bool focused = false;
+
+  void setFocus(){
+    if(!focused){
+      FocusScope.of(context).requestFocus(focusLogin);
+      focused = true;
+    }
+  }
+
   Authentication authentication = Authentication();
   
   @override
   Widget build(BuildContext context) {
+    setFocus();
     return Scaffold(
       key: scaffoldKey,
       body: SingleChildScrollView(
@@ -38,6 +50,7 @@ class _UserLogInState extends State<UserLogIn> {
             ),
             SizedBox(height: 70.0),
             appTextField2(
+              focusNode: focusLogin,
               isPassword: false,
               sidePadding: 12.0,
               textHint: 'Email',

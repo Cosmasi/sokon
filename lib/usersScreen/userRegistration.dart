@@ -18,10 +18,23 @@ class _UserRegistrationState extends State<UserRegistration> {
   TextEditingController phoneNumber = TextEditingController();
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
+  var focusRegistration = FocusNode();
+
+  bool focused = false;
+
   Authentication authentication = Authentication();
+
+
+  void setFocus(){
+    if(!focused){
+      FocusScope.of(context).requestFocus(focusRegistration);
+      focused = true;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
+    setFocus();
     return Scaffold(
       key: scaffoldKey,
       body: SingleChildScrollView(
@@ -38,6 +51,7 @@ class _UserRegistrationState extends State<UserRegistration> {
             ),
             SizedBox(height: 40),
             appTextField2(
+              focusNode: focusRegistration,
               isPassword: false,
               sidePadding: 12.0,
               textHint: 'Full Name',

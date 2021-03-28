@@ -22,8 +22,20 @@ class _VendorRegistrationState extends State<VendorRegistration> {
 
   Authentication authentication = Authentication();
 
+  var focusRegistration = FocusNode();
+
+  bool focused = false;
+
+  void setFocus(){
+    if(!focused){
+      FocusScope.of(context).requestFocus(focusRegistration);
+      focused = true;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    setFocus();
     return Scaffold(
       key: scaffoldKey,
       body: SingleChildScrollView(
@@ -41,6 +53,7 @@ class _VendorRegistrationState extends State<VendorRegistration> {
             SizedBox(height: 40),
             appTextField2(
               isPassword: false,
+              focusNode: focusRegistration,
               sidePadding: 12.0,
               textHint: 'Full Name',
               textIcon: Icons.person, color: Colors.green,

@@ -50,6 +50,7 @@ Widget appTextField({
     double sidePadding,
     double sidealignment,
     TextInputType texttype,
+    FocusNode focusNode,
     TextEditingController controller,
     VoidCallback onTap,
       onChange  
@@ -71,6 +72,7 @@ Widget appTextField({
               padding: const EdgeInsets.only(left:15.0),
               child: TextField(
                 onChanged: onChange,
+                focusNode: focusNode,
                 controller: controller,
                 obscureText: isPassword == null ? false : isPassword,
                 keyboardType: texttype,

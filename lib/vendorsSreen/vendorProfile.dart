@@ -55,9 +55,9 @@ class _VendorProfileState extends State<VendorProfile> {
 
   @override
   Widget build(BuildContext context) {
-    vendorNameConteroller.text = vendorsInfo.vendorName;
-    vendorEmailConteroller.text = vendorsInfo.vendorEmail;
-    vendorPhoneConteroller.text = vendorsInfo.vendorPhone;
+    vendorNameConteroller.text = vendorsInfo.vendorName == null ? "Name": vendorsInfo.vendorName;
+    vendorEmailConteroller.text = vendorsInfo.vendorEmail == null ? "Email": vendorsInfo.vendorEmail;
+    vendorPhoneConteroller.text = vendorsInfo.vendorPhone == null ? "Phone": vendorsInfo.vendorPhone;
     return Scaffold(
       key: scaffoldKey,
       body: new Container(

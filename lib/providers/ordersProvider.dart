@@ -13,12 +13,14 @@ class OrdersProvider with ChangeNotifier{
 
   List<OrderItems> get orders => List.from(_orders);
 
-  DatabaseReference orderRef = FirebaseDatabase.instance.reference().child(orderNode);
   User currentUser = FirebaseAuth.instance.currentUser;
-  
+
+  DatabaseReference orderRef = FirebaseDatabase.instance.reference().child(orderNode);
+
   Future<String> addOrders(List<CartItems> cartProducts) async{
     String ordersKey = orderRef.push().key;
     final timestamp = DateTime.now();
+
     orderRef.child(currentUser.uid).push().set({
       "products": cartProducts.map((product) => {
         "id": product.id,
@@ -29,6 +31,8 @@ class OrdersProvider with ChangeNotifier{
       }).toList(),
       "dateTime": timestamp.toIso8601String(),
       "userId": currentUser.uid,
+      "userName": accountName,
+      "phone": phoneN,
     });
     _orders.insert(0, OrderItems(
       id: ordersKey,
@@ -42,12 +46,11 @@ class OrdersProvider with ChangeNotifier{
 
 
   Future<bool> fetchOrders() async{
-
     final http.Response response = await
     http.get("https://sokon-79b29-default-rtdb.firebaseio.com/orders/${currentUser.uid}.json");
     final Map<String, dynamic> ordersData = json.decode(response.body);
 
-    List<OrderItems> loadeOrders = [];
+    List<OrderItems> loaderOrders = [];
 
     ordersData.forEach((key, value) {
       // print(_orders);
@@ -64,9 +67,9 @@ class OrdersProvider with ChangeNotifier{
             )).toList(),
       );
       print(data);
-      loadeOrders.add(data);
+      loaderOrders.add(data);
     });
-    _orders = loadeOrders.reversed.toList();
+    _orders = loaderOrders.reversed.toList();
     notifyListeners();
     return Future.value(true);
   }

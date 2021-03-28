@@ -15,7 +15,10 @@ class NotificationDialog extends StatefulWidget {
 
 class _NotificationDialogState extends State<NotificationDialog> {
   TextEditingController _priceController = TextEditingController();
-  String _userId, _pdtTitle, _price;
+
+  String _userId;
+  String userName;
+  String phone;
 
   @override
   void initState() {
@@ -26,16 +29,9 @@ class _NotificationDialogState extends State<NotificationDialog> {
   void getUserInfo(){
     for(int i = 0; i<widget.orderItem.length; i++){
       _userId = widget.orderItem[i].user_id;
-      _pdtTitle = widget.orderItem[i].products.map((e) => e.title).join("\n").toString();
-      // _price = widget.orderItem[i].products.map((e) => e.price).join("\n").toString();
-
-      setState(() {
-        _priceController.text = _price;
-      });
+      userName = widget.orderItem[i].username;
+      phone = widget.orderItem[i].phoneNumber;
     }
-    print("USER ID:: $_userId");
-    // print("USER DATA:: $_pdtTitle");
-    // print("USER DATA:: $_price");
   }
 
 
@@ -59,7 +55,41 @@ class _NotificationDialogState extends State<NotificationDialog> {
           // mainAxisSize: MainAxisSize.min,
           children: [
             SizedBox(height: 30.0,),
-            Image.asset('assets/images/taxi.png', width: 100,),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    width: 80.0,
+                    height: 80.0,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(40.0),
+                      boxShadow: [
+                        BoxShadow(
+                            color: Colors.black12,
+                            blurRadius: 2.0,
+                            spreadRadius: 0.5,
+                          offset: Offset(0.7, 0.7)
+                        )
+                      ]
+                    ),
+                    child: Image.asset('assets/images/user_icon.png'),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text("$userName", style: TextStyle(fontSize: 20.0)),
+                        SizedBox(height: 5.0,),
+                        Text("$phone", style: TextStyle(fontSize: 20.0)),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
             SizedBox(height: 16.0,),
             Text('NEW ORDER REQUEST', style: TextStyle(fontSize: 18),),
             Divider(thickness: 1.0,),
@@ -90,16 +120,14 @@ class _NotificationDialogState extends State<NotificationDialog> {
                                   borderRadius: BorderRadius.circular(15.0),
                                   color: Colors.grey[200]
                               ),
-                              child: Text("", style: TextStyle(fontSize: 20.0))
-                              
-                              // TextField(
-                              //   // controller: _priceController,
-                              //   decoration: InputDecoration(
-                              //     border: InputBorder.none,
-                              //     hintText: "0.0",
-                              //     contentPadding: EdgeInsets.symmetric(vertical: 8.5, horizontal: 7.0)
-                              //   ),
-                              // ),
+                              child: TextField(
+                                // controller: _priceController,
+                                decoration: InputDecoration(
+                                  border: InputBorder.none,
+                                  hintText: "0.0",
+                                  contentPadding: EdgeInsets.symmetric(vertical: 8.5, horizontal: 7.0)
+                                ),
+                              ),
                             ),
                           )
                         ],

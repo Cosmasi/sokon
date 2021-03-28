@@ -27,8 +27,20 @@ class _VendorsLogInScreenState extends State<VendorsLogInScreen> {
   DatabaseReference tripRequestRef;
   User currentUser;
 
+  var focusLogin = FocusNode();
+
+  bool focused = false;
+
+  setFocus(){
+    if(!focused){
+      FocusScope.of(context).requestFocus(focusLogin);
+      focused = true;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    setFocus();
     return Scaffold(
       key: scaffoldKey,
       body: SingleChildScrollView(
@@ -47,6 +59,7 @@ class _VendorsLogInScreenState extends State<VendorsLogInScreen> {
             SizedBox(height: 70.0),
             appTextField2(
               isPassword: false,
+              focusNode: focusLogin,
               sidePadding: 12.0,
               textHint: 'Email',
               textIcon: Icons.email, color: Colors.green,
