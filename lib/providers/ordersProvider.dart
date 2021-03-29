@@ -26,7 +26,7 @@ class OrdersProvider with ChangeNotifier{
         "id": product.id,
         "title": product.title,
         "quantity": product.quantity.toString(),
-        // "price": product.price.toString(),
+        "price": product.price.toString(),
         "selectedQty": product.selectedQty.toString()
       }).toList(),
       "dateTime": timestamp.toIso8601String(),

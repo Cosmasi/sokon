@@ -105,7 +105,7 @@ class PushNotificationService{
               id: items['id'].toString(),
               quantity: int.parse(items['quantity'].toString()),
               title: items['title'],
-              // price: double.parse(items['price'].toString()),
+              price: items['price'].toString(),
             ),).toList(),
       );
       // print(data);
