@@ -8,20 +8,19 @@ class CartProvider with ChangeNotifier{
     return {..._items};
   }
 
-  void addToCart(String productId, String title){
+  void addToCart(String productId, String title, String selectedQty){
     if(_items.containsKey(productId)){
       _items.update(productId, (existingCartItem) => CartItems(
         id: existingCartItem.id,
         title: existingCartItem.title,
-        productDescription: existingCartItem.productDescription,
-        quantity: existingCartItem.quantity,
+        quantity: existingCartItem.selectedQty,
       ));
     }
     else{
       _items.putIfAbsent(productId, () => CartItems(
         id: DateTime.now().millisecondsSinceEpoch.toString(),
         title: title,
-        quantity: 1,
+        quantity: selectedQty,
       ));
     }
     notifyListeners();

@@ -58,13 +58,11 @@ class OrdersProvider with ChangeNotifier{
       // print(_orders);
       OrderItems data = OrderItems(
         id: key,
-        // amount: double.parse((value['amount'].toString())),
         dateTime: DateTime.parse(value['dateTime'].toString()),
         products: (value['products'] as List<dynamic>).map((items) =>
             CartItems(
               id: items['id'].toString(),
-              // price: double.parse(items['price'].toString()),
-              quantity: int.parse(items['quantity'].toString()),
+              quantity: items['quantity'].toString(),
               title: items['title'],
             )).toList(),
       );
@@ -93,9 +91,9 @@ class OrdersProvider with ChangeNotifier{
         products: (value['products'] as List<dynamic>).map((e) =>
             CartItems(
               id: e['id'].toString(),
-              quantity: int.parse(e['quantity'].toString()),
+              quantity: e['quantity'].toString(),
               price: e['price'].toString(),
-              title: e['title'].toString()
+              title: e['title'].toString(),
             )
         ).toList()
       );

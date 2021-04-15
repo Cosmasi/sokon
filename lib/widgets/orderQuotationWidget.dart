@@ -22,7 +22,7 @@ class _OrderQuotationWidgetState extends State<OrderQuotationWidget> {
         duration: Duration(milliseconds: 300),
       height: _expanded ? min(widget.resendOrder.products.length * 30.0 + 150, 200) : 95,
       child: Card(
-        margin: EdgeInsets.all(10.0),
+        margin: EdgeInsets.symmetric(horizontal: 10.0),
         child: Column(
           children: [
             ListTile(
@@ -40,7 +40,7 @@ class _OrderQuotationWidgetState extends State<OrderQuotationWidget> {
             AnimatedContainer(
                 duration: Duration(milliseconds: 300),
               padding: EdgeInsets.symmetric(horizontal: 15.0),
-              height: _expanded ? min(widget.resendOrder.products.length * 20.0 + 50, 100) : 0,
+              height: _expanded ? min(widget.resendOrder.products.length * 20.0 + 100, 100) : 0,
               child: Column(
                 children: [
                   Expanded(
@@ -54,6 +54,10 @@ class _OrderQuotationWidgetState extends State<OrderQuotationWidget> {
                             style: TextStyle(fontSize: 18),
                           ),
                           Text(
+                            widget.resendOrder.products[index].quantity,
+                            style: TextStyle(fontSize: 18),
+                          ),
+                          Text(
                             "Tsh ${widget.resendOrder.products[index].price}",
                             style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                           )
@@ -61,29 +65,57 @@ class _OrderQuotationWidgetState extends State<OrderQuotationWidget> {
                       ),
                     ),
                   ),
-                  SizedBox(height: 10.0,),
+                  SizedBox(height: 5.0,),
+                  Text("status"),
                   Expanded(
-                      child: GestureDetector(
-                        onTap: (){},
-                        child: Container(
-                          width: 150.0,
-                          height: 100.0,
-                          decoration: BoxDecoration(
-                            color: Colors.green,
-                            borderRadius: BorderRadius.circular(15.0)
-                          ),
-                          child: Center(
-                            child: Text(
-                              "Accept Quotation",
-                              style: TextStyle(
-                                  color: Colors.white,
-                                fontSize: 18.0,
-                                fontWeight: FontWeight.bold
-                              ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          GestureDetector(
+                            onTap: (){},
+                            child: Container(
+                                width: 120.0,
+                                height: 100.0,
+                                decoration: BoxDecoration(
+                                    color: Colors.green,
+                                    borderRadius: BorderRadius.circular(15.0)
+                                ),
+                                child: Center(
+                                  child: Text(
+                                    "Accept",
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 18.0,
+                                        fontWeight: FontWeight.bold
+                                    ),
+                                  ),
+                                )
                             ),
-                          )
-                        ),
-                      ),
+                          ),
+                          Text("Pending", style: TextStyle(color: Colors.green, fontSize: 18.0),),
+                          GestureDetector(
+                            onTap: (){},
+                            child: Container(
+                                width: 120.0,
+                                height: 100.0,
+                                decoration: BoxDecoration(
+                                    color: Colors.green,
+                                    borderRadius: BorderRadius.circular(15.0)
+                                ),
+                                child: Center(
+                                  child: Text(
+                                    "Cancel",
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 18.0,
+                                        fontWeight: FontWeight.bold
+                                    ),
+                                  ),
+                                )
+                            ),
+                          ),
+                        ],
+                      )
                   )
                 ],
               )

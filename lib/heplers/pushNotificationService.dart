@@ -103,7 +103,7 @@ class PushNotificationService{
         products: (value['products'] as List<dynamic>).map((items) =>
             CartItems(
               id: items['id'].toString(),
-              quantity: int.parse(items['quantity'].toString()),
+              quantity: items['quantity'].toString(),
               title: items['title'],
               price: items['price'].toString(),
             ),).toList(),

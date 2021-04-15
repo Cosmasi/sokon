@@ -1,4 +1,6 @@
 
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 
 
@@ -6,7 +8,7 @@ import 'package:flutter/material.dart';
 class CartWidget extends StatefulWidget {
   final String id;
   final String productId;
-  int quantity;
+  final String quantity;
   final String title;
   // final double price;
 
@@ -18,85 +20,45 @@ class CartWidget extends StatefulWidget {
 
 class _CartWidgetState extends State<CartWidget> {
 
-  increamentCounter(){
-    setState(() {
-      widget.quantity++;
-    });
-  }
+  // increamentCounter(){
+  //   setState(() {
+  //     widget.quantity++;
+  //   });
+  // }
 
-  decrementCounter(){
-    setState(() {
-      widget.quantity--;
-    });
-  }
+  // decrementCounter(){
+  //   setState(() {
+  //     widget.quantity--;
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {
     return Card(
       margin: EdgeInsets.symmetric(horizontal: 15, vertical: 4),
       child: Padding(
-        padding: EdgeInsets.all(8),
+        padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(widget.title),
+                Text("Product", style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold)),
+                SizedBox(height: 10.0),
+                Text(widget.title, style: TextStyle(fontSize: 18.0, color: Colors.black)),
               ],
             ),
-            GestureDetector(
-              onTap: decrementCounter,
-              child: Container(
-                height: 40.0,
-                width: 40.0,
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(20.0),
-                  boxShadow: [
-                    BoxShadow(
-                      blurRadius: 3.0,
-                      offset: Offset(0.7, 0.7)
-                    )
-                  ],
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text("Unit measure", style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold)),
+                SizedBox(height: 10.0),
+                Text(
+                  "${widget.quantity.toString()}",
+                  style: TextStyle(fontSize: 18.0, color: Colors.black),
                 ),
-                child: CircleAvatar(
-                  backgroundColor: Colors.white,
-                    child: Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 5),
-                    child: FittedBox(
-                      child: Text("-", style: TextStyle(fontSize: 50)),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-            Text("${widget.quantity.toString()}"),
-            GestureDetector(
-              onTap: increamentCounter,
-              child: Container(
-                height: 40.0,
-                width: 40.0,
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(20.0),
-                  boxShadow: [
-                    BoxShadow(
-                      blurRadius: 3.0,
-                      offset: Offset(0.7, 0.7)
-                    )
-                  ],
-                ),
-                child: CircleAvatar(
-                  backgroundColor: Colors.white,
-                    child: Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 5),
-                    child: FittedBox(
-                      child: Text("+", style: TextStyle(fontSize: 50)),
-                    ),
-                  ),
-                ),
-              ),
+              ],
             ),
           ],
         ),

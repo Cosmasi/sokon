@@ -73,12 +73,12 @@ UsersModel usersInfo;
 
 List<String> localQuantity = [
   "Select a quantity",
-  "10",
-  "20",
-  "30",
-  "40",
-  "50",
-  "60 and above"
+  "10Kg",
+  "20Kg",
+  "30Kg",
+  "40Kg",
+  "50Kg",
+  "60Kg and above"
 ];
 
 List<String> localVariation = [

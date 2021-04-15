@@ -48,10 +48,10 @@ class _OrdersWidgetState extends State<OrdersWidget> {
                       widget.order.products[index].title,
                       style: TextStyle(fontSize: 18),
                     ),
-                    // Text(
-                    //   '${widget.order.products[index].quantity}x Tsh ${widget.order.products[index].price}',
-                    //   style: TextStyle(fontSize: 18,color: Colors.grey),
-                    // )
+                    Text(
+                      '${widget.order.products[index].quantity}',
+                      style: TextStyle(fontSize: 18),
+                    )
                   ],
                 ),
               ),

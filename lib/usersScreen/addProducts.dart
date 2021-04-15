@@ -25,7 +25,6 @@ class _AddProductsState extends State<AddProducts> {
   Map<int, File> imageMap = Map();
 
   TextEditingController productTitleController = TextEditingController();
-  TextEditingController productDescController = TextEditingController();
 
   DateTime time = DateTime.now();
 
@@ -87,62 +86,60 @@ class _AddProductsState extends State<AddProducts> {
             )
           ],
         ),
-        body: SingleChildScrollView(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-
-              SizedBox(height: 10.0),
-
-              productTextField(
-                controller: productTitleController,
-                focusNode: focusProduct,
-                boxColor: Colors.white,
-                textTitle: "Product name", 
-                texHint: "Enter Product name",
-              ),
-
-              SizedBox(height: 10.0),
-
-              productTextField(
-                controller: productDescController,
-                boxColor: Colors.white,
-                textTitle: "Product Description",
-                texHint: "Enter Product Description",
-                height: 180.0,
-                maxlines: 4,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  productDropDown(
-                    textTitle: "Quantity",
-                    selectedItem: _selectedQuantity,
-                    dropDownItems: _dropDownQuantity,
-                    changeDropDownItems: changedDropDownQuantity,
-                  ),
-                ],
-              ),
-              appButton(
-                buttonText: 'Add Products To the Cart',
-                icon: Icons.add, size: 30.0, color: Colors.green,
-                buttonPadding: 15.0,
-                buttoncolor: Colors.black,
-                btnColor: Colors.white,
-                onBtnclick: () {
-                  addNewProduct(context);
-                  clearInputData();
-                  Navigator.pushNamedAndRemoveUntil(context, HomeScreen.id, (route) => false);
-                  // Navigator.push(context, MaterialPageRoute(builder: (_) => HomeScreen()));
-                  scaffoldKey.currentState.showSnackBar(SnackBar(
-                    backgroundColor: Colors.green,
-                    content: Text('Product added to the cart'),
-                  ));
-                },
-              ),
-              SizedBox(height: 25.0),
-            ],
+        body: Center(
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // SizedBox(height: 20.0),
+                productTextField(
+                  controller: productTitleController,
+                  focusNode: focusProduct,
+                  boxColor: Colors.white,
+                  textTitle: "",
+                  texHint: "Enter Product name",
+                ),
+                SizedBox(height: 20.0),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    productDropDown(
+                      textTitle: "",
+                      selectedItem: _selectedQuantity,
+                      dropDownItems: _dropDownQuantity,
+                      changeDropDownItems: changedDropDownQuantity,
+                    ),
+                  ],
+                ),
+                SizedBox(height: 30.0),
+                appButton(
+                  buttonText: 'Add Products To the Cart',
+                  icon: Icons.add, size: 30.0, color: Colors.green,
+                  buttonPadding: 15.0,
+                  buttoncolor: Colors.black,
+                  btnColor: Colors.white,
+                  onBtnclick: () {
+                    if(productTitleController.text.isEmpty){
+                      scaffoldKey.currentState.showSnackBar(SnackBar(
+                        backgroundColor: Colors.red,
+                        content: Text('Please enter product name'),
+                      ));
+                    }
+                    else{
+                      addNewProduct(context);
+                      clearInputData();
+                      Navigator.pushNamedAndRemoveUntil(context, HomeScreen.id, (route) => false);
+                      scaffoldKey.currentState.showSnackBar(SnackBar(
+                        backgroundColor: Colors.green,
+                        content: Text('Product added to the cart'),
+                      ));
+                    }
+                  },
+                ),
+                // SizedBox(height: 25.0),
+              ],
+            ),
           ),
         ),
       ),
@@ -160,14 +157,14 @@ class _AddProductsState extends State<AddProducts> {
     final cart = Provider.of<CartProvider>(context, listen: false);
     cart.addToCart(
       time.toIso8601String(), 
-      productTitleController.text, 
+      productTitleController.text,
+      _selectedQuantity
     );
   }
 
   void clearInputData(){
     setState(() {
       productTitleController.clear();
-      productDescController.clear();
     });
   }
 
