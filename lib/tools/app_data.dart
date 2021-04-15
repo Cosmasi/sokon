@@ -36,6 +36,10 @@ String accountEmail = "";
 bool isLoggedin = true;
 String phoneN = "";
 
+String vID;
+// String vName;
+// String vPhone;
+
 
 // USER DETAILS
 const String userID = "userID";

@@ -1,5 +1,9 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:sokon/heplers/pushNotificationService.dart';
+import 'package:sokon/models/vendors.dart';
+import 'package:sokon/tools/app_data.dart';
 import 'package:sokon/vendorsSreen/vendorAuthMainScreen.dart';
 import 'package:sokon/vendorsSreen/vendorProfile.dart';
 import 'package:sokon/vendorsSreen/vendorsOrder.dart';
@@ -19,6 +23,7 @@ class _VendorHomeScreenState extends State<VendorHomeScreen> {
   @override
   void initState() {
     getCurrentVendor(context);
+    authentication.getVendors();
     super.initState();
   }
 

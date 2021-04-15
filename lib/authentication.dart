@@ -194,5 +194,23 @@ class Authentication{
     return true;
   }
 
+  Future<void> getVendors() async{
+    DatabaseReference vendorsRef = FirebaseDatabase.instance.reference().child(vendors);
+    User firebaseUser = auth.currentUser;
+    vendorsRef.child(firebaseUser.uid).once().then((DataSnapshot snapshot){
+      if(snapshot.value !=null){
+        Vendors vendors = Vendors(
+          vendorId: snapshot.value[vendorID],
+          vendorName: snapshot.value[vendorName],
+          vendorEmail: snapshot.value[vendorEmail],
+          vendorPhone: snapshot.value[vendorPhoneNumber],
+        );
+        // print(vendors.vendorName);
+        print(vendors.vendorId);
+        vendorsInfo = vendors;
+      }
+    });
+  }
+
 
 }

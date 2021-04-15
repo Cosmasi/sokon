@@ -10,8 +10,10 @@ import 'package:http/http.dart' as http;
 
 class OrdersProvider with ChangeNotifier{
   List<OrderItems> _orders = [];
+  List<OrderItems> _resendOrders = [];
 
   List<OrderItems> get orders => List.from(_orders);
+  List<OrderItems> get resendOrders => List.from(_resendOrders);
 
   User currentUser = FirebaseAuth.instance.currentUser;
 
@@ -70,6 +72,37 @@ class OrdersProvider with ChangeNotifier{
       loaderOrders.add(data);
     });
     _orders = loaderOrders.reversed.toList();
+    notifyListeners();
+    return Future.value(true);
+  }
+
+
+  Future<bool> fetchResendOrder() async{
+    final http.Response response = await
+        http.get("https://sokon-79b29-default-rtdb.firebaseio.com/resendOrders/${currentUser.uid}/$vID.json");
+
+    final Map<String, dynamic> ordersResendData = json.decode(response.body);
+    List<OrderItems> loaderResendOrders = [];
+
+    ordersResendData.forEach((key, value) {
+      OrderItems orderItems = OrderItems(
+        id: key,
+        dateTime: DateTime.parse(value['dateTime'].toString()),
+        username: value['userName'],
+        phoneNumber: value['phone'],
+        products: (value['products'] as List<dynamic>).map((e) =>
+            CartItems(
+              id: e['id'].toString(),
+              quantity: int.parse(e['quantity'].toString()),
+              price: e['price'].toString(),
+              title: e['title'].toString()
+            )
+        ).toList()
+      );
+      print(orderItems);
+        loaderResendOrders.add(orderItems);
+    });
+    _resendOrders = loaderResendOrders.reversed.toList();
     notifyListeners();
     return Future.value(true);
   }

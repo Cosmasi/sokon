@@ -10,7 +10,7 @@ class OrdersScreen extends StatefulWidget {
 }
 
 class _OrdersScreenState extends State<OrdersScreen> {
-  OrderItems orderItems;
+  // OrderItems orderItems;
 
   @override
   Widget build(BuildContext context) {

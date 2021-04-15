@@ -25,8 +25,7 @@ class _OrdersWidgetState extends State<OrdersWidget> {
         child: Column(
           children: [
             ListTile(
-              title: Text("Order No: ${widget.order.products.length}"),
-              subtitle: Text(DateFormat("dd/MM/yyyy HH:mm").format(widget.order.dateTime)),
+              title: Text(DateFormat("dd/MM/yyyy HH:mm").format(widget.order.dateTime)),
               trailing: IconButton(
                 icon: Icon(_expanded ? Icons.expand_less : Icons.expand_more),
                 onPressed: () {
@@ -47,7 +46,7 @@ class _OrdersWidgetState extends State<OrdersWidget> {
                   children: [
                     Text(
                       widget.order.products[index].title,
-                      style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                      style: TextStyle(fontSize: 18),
                     ),
                     // Text(
                     //   '${widget.order.products[index].quantity}x Tsh ${widget.order.products[index].price}',

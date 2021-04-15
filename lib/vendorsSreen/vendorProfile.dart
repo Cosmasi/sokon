@@ -29,29 +29,10 @@ class _VendorProfileState extends State<VendorProfile> {
 
   @override
   void initState() {
-    // authentication.getVendors();
-    getVendors();
+    authentication.getVendors();
     super.initState();
   }
 
-  Future<void> getVendors() async{
-    DatabaseReference vendorsRef = FirebaseDatabase.instance.reference().child(vendors);
-    User firebaseUser = auth.currentUser;
-    vendorsRef.child(firebaseUser.uid).once().then((DataSnapshot snapshot){
-      Vendors vendors = Vendors(
-        vendorId: snapshot.value[vendorID],
-        vendorName: snapshot.value[vendorName],
-        vendorEmail: snapshot.value[vendorEmail],
-        vendorPhone: snapshot.value[vendorPhoneNumber],
-      );
-      // print(vendors.vendorName);
-      print(vendors.vendorId);
-      vendorsInfo = vendors;
-      setState(() {
-
-      });
-    });
-  }
 
   @override
   Widget build(BuildContext context) {

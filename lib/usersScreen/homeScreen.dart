@@ -9,6 +9,7 @@ import 'package:sokon/tools/app_data.dart';
 import 'package:sokon/tools/app_tools.dart';
 import 'package:sokon/usersScreen/addProducts.dart';
 import 'package:sokon/usersScreen/authMainScreen.dart';
+import 'package:sokon/usersScreen/orderQuotation.dart';
 import 'package:sokon/usersScreen/ordersScreen.dart';
 import 'package:sokon/usersScreen/profileScreen.dart';
 import 'package:sokon/vendorsSreen/vendorAuthMainScreen.dart';
@@ -29,6 +30,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   String vendorName;
   String vendorPhone;
+  String id;
 
   Authentication authentication = Authentication();
 
@@ -46,12 +48,17 @@ class _HomeScreenState extends State<HomeScreen> {
 
     vendorRef.once().then((DataSnapshot snapshot){
       if(snapshot.value !=null){
+        id = snapshot.key;
         token = snapshot.value['token'];
         vendorName = snapshot.value['vendorName'].toString();
         vendorPhone = snapshot.value['vendorPhoneNumber'];
       }
     });
+    setState(() {
+      vID = nearbyVendor.key;
+    });
     print("VENDOR TOKEN:: $token}");
+    print("VENDOR ID:: $vID");
   }
 
 
@@ -188,7 +195,10 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ),
                     GestureDetector(
-                      onTap: (){},
+                      onTap: (){
+                        Navigator.push(context, MaterialPageRoute(
+                            builder: (_) => OrderQuotation()));
+                      },
                       child: Card(
                         elevation: 5.0,
                         child: Padding(
@@ -197,7 +207,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             children: [
                               Icon(Icons.history, size: 30.0, color: Colors.green),
                               SizedBox(width: 5.0),
-                              Text('Orders History', style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold)),
+                              Text('Orders Quotation', style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold)),
                             ],
                           ),
                         ),
